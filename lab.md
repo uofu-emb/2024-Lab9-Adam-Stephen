@@ -43,8 +43,8 @@ Counter example sequence that makes the invariant false:
 | 10     | 1         | 0        | 1                  | 0                  |0               |0               |0             |0             |0             |7              |14          |
 | 11     | 1         | 0        | 1                  | 1                  |0               |0               |0             |0             |0             |7              |15          |
 | 12     | 1         | 1        | 0                  | 0                  |0               |0               |0             |0             |0             |8              |4           |
-| 13     | 1         | 1        | 0                  | 1                  |0               |0               |0             |0             |1             |               |4,15        |
-| 14     | 1         | 1        | 1                  | 0                  |0               |0               |0             |0             |1             |               |4,15        |
+| 13     | 1         | 1        | 0                  | 1                  |0               |0               |0             |0             |1             |               |4,14,15     |
+| 14     | 1         | 1        | 1                  | 0                  |0               |0               |0             |0             |1             |               |4,13,15     |
 | 15     | 1         | 1        | 1                  | 1                  |0               |0               |0             |0             |1             |               |4,13,14     |
 
 | number | invariant |
@@ -57,3 +57,5 @@ Counter example sequence that makes the invariant false:
 | 21     | 6         |
 | 22     | 7         |
 | 22     | 8         |
+
+See labFSM.pdf for the result of this table.
