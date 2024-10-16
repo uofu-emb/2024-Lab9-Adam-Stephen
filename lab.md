@@ -9,9 +9,10 @@ Our state machines are modeled from scenario 1 (parallel tracks do not cross, ca
 1. Barrier will always be closed when train is going by
 1. A second train on the same track will not hit the approach sensor before the first train hits the depart sensor
 1. Alarm is ringing 10 seconds before a train arrives, when the train is present, and 10 seconds after a train departs
+1. The barrier will always be raised when no train is present
 
 
-#Varying Invariants
+# Varying Invariants
 
 Invariants that the example FSM assumes:
 1. Only one train total (north or south) is present between the two sensors during anytime the alarm is ringing
@@ -25,27 +26,34 @@ Counter example sequence that makes the invariant false:
 1. Southbound train goes through the crossing while gates are up, safety hazard, invariant is false
 
 
-#Prove it.
+# Prove it.
 
-| number | arms_down | alarm_on | northbound_present | southbound_present | north_approach | south_approach | north_depart | south_depart | ringing | safety_hazard |
-|--------|-----------|----------|--------------------|--------------------|----------------|----------------|--------------|--------------|---------|---------------|
-| 0      | 0         | 0        | 0                  | 0                  |0               |0               |0             |0             |0        |               |
-| 1      | 0         | 0        | 0                  | 1                  |0               |1               |0             |0             |1        |               |
-| 2      | 0         | 0        | 1                  | 0                  |                |                |              |              |         |               |
-| 3      | 0         | 0        | 1                  | 1                  |                |                |              |              |         |               |
-| 4      | 0         | 1        | 0                  | 0                  |                |                |              |              |         |               |
-| 5      | 0         | 1        | 0                  | 1                  |                |                |              |              |         |               |
-| 6      | 0         | 1        | 1                  | 0                  |                |                |              |              |         |               |
-| 7      | 0         | 1        | 1                  | 1                  |                |                |              |              |         |               |
-| 8      | 1         | 0        | 0                  | 0                  |                |                |              |              |         |               |
-| 9      | 1         | 0        | 0                  | 1                  |                |                |              |              |         |               |
-| 10     | 1         | 0        | 1                  | 0                  |                |                |              |              |         |               |
-| 11     | 1         | 0        | 1                  | 1                  |                |                |              |              |         |               |
-| 12     | 1         | 1        | 0                  | 0                  |                |                |              |              |         |               |
-| 13     | 1         | 1        | 0                  | 1                  |                |                |              |              |         |               |
-| 14     | 1         | 1        | 1                  | 0                  |                |                |              |              |         |               |
-| 15     | 1         | 1        | 1                  | 1                  |                |                |              |              |         |               |
+| number | arms_down | alarm_on | northbound_present | southbound_present | north_approach | south_approach | north_depart | south_depart | time_elapsed | safety_hazard | next state |
+|--------|-----------|----------|--------------------|--------------------|----------------|----------------|--------------|--------------|--------------|---------------|------------|
+| 0      | 0         | 0        | 0                  | 0                  |0               |0               |0             |0             |1             |               |0,5,6,7     |
+| 1      | 0         | 0        | 0                  | 1                  |0               |1               |0             |0             |0             | 7             |5           |
+| 2      | 0         | 0        | 1                  | 0                  |1               |0               |0             |0             |0             |7              |6           |
+| 3      | 0         | 0        | 1                  | 1                  |1               |1               |0             |0             |0             |7              |7           |
+| 4      | 0         | 1        | 0                  | 0                  |0               |0               |1             |1             |0             |               |0,5,6,7     |
+| 5      | 0         | 1        | 0                  | 1                  |0               |0               |0             |0             |0             |               |13,7        |
+| 6      | 0         | 1        | 1                  | 0                  |0               |0               |0             |0             |0             |               |14,7        |
+| 7      | 0         | 1        | 1                  | 1                  |0               |0               |0             |0             |0             |               |15          |
+| 8      | 1         | 0        | 0                  | 0                  |0               |0               |0             |0             |0             |8              |0           |
+| 9      | 1         | 0        | 0                  | 1                  |0               |0               |0             |0             |0             |7              |13          |
+| 10     | 1         | 0        | 1                  | 0                  |0               |0               |0             |0             |0             |7              |14          |
+| 11     | 1         | 0        | 1                  | 1                  |0               |0               |0             |0             |0             |7              |15          |
+| 12     | 1         | 1        | 0                  | 0                  |0               |0               |0             |0             |0             |8              |4           |
+| 13     | 1         | 1        | 0                  | 1                  |0               |0               |0             |0             |1             |               |4,15        |
+| 14     | 1         | 1        | 1                  | 0                  |0               |0               |0             |0             |1             |               |4,15        |
+| 15     | 1         | 1        | 1                  | 1                  |0               |0               |0             |0             |1             |               |4,13,14     |
 
 | number | invariant |
 |--------|-----------|
-| 16     |           |
+| 16     | 1         |
+| 17     | 2         |
+| 18     | 3         |
+| 19     | 4         |
+| 20     | 5         |
+| 21     | 6         |
+| 22     | 7         |
+| 22     | 8         |
